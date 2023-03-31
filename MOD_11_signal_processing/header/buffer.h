@@ -9,6 +9,8 @@ public:
 
 	void insert(T input);
 
+	int get_maximum();
+
 private:
 	T bufferArray[SIZE];
 
@@ -42,6 +44,13 @@ inline void buffer<T, SIZE>::insert(T input)
 {
 	this->incrementIndex();
 	bufferArray[index] = input;
+}
+
+template <typename T, int SIZE>
+inline int buffer<T, SIZE>::get_maximum()
+{
+	
+    return 0;
 }
 
 template<typename T, int SIZE>

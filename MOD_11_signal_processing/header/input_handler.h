@@ -1,11 +1,17 @@
 #pragma once
 #include "buffer.h"
 
+template<typename T>
+T get_value(){
+    //Do reading of microphone value here
+    return 0;
+}
+
 template<typename T, int SIZE>
-void update_buffer(float Fs){
+void input_handler(float Fs){
     //This sets up the variables for update_buffer
     unsigned long end_time;
-    unsigned long Ts_us = int(1000000.0f/Fs);
+    unsigned long Ts_us = int(1000000.0f/Fs_mic);
 
     while(1){
         //This is the loop to update the buffers
@@ -27,10 +33,4 @@ void update_buffer(float Fs){
             delay++;
         }
     }
-}
-
-template<typename T>
-T get_value(){
-    //Do reading of microphone value here
-    return 0;
 }
