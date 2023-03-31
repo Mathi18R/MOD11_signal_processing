@@ -1,4 +1,4 @@
-#include <Arduino.h> 
+#include <Arduino.h>
 #include <mutex>
 
 std::mutex buffer_mutex;
@@ -10,6 +10,8 @@ buffer<float, SIZE> bufferRB;
 
 float Fs_mic = 40000;
 float Fs_output = 20;
+
+int region = 0;
 
 //Needs to be included after mutex and buffer declarations
 #include "input_handler.h"
