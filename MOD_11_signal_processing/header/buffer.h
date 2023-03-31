@@ -1,17 +1,13 @@
 #pragma once
-#include "utils.h"
-
 template<typename T, int SIZE>
 class buffer
 {
 public:
 	buffer();
 
-	T operator[](int i);
+	T operator[](int i) const;
 
 	void insert(T input);
-
-	int get_maximum();
 
 private:
 	T bufferArray[SIZE];
@@ -20,7 +16,7 @@ private:
 
 	void incrementIndex();
 
-	int modNonNegative(int a, int b);
+	int modNonNegative(int a, int b) const;
 };
 
 template<typename T, int SIZE>
@@ -32,11 +28,11 @@ buffer<T, SIZE>::buffer()
 }
 
 template<typename T, int SIZE>
-T buffer<T, SIZE>::operator[](int i)
+T buffer<T, SIZE>::operator[](int i) const
 {
 	if (i < 0 || i >= SIZE) {
 		//TODO write Serial.Print function giving "Error: buffer index out of range"
-		abort();
+		return T(0);
 	}
 	return bufferArray[modNonNegative((index - i), SIZE)];
 }
@@ -48,19 +44,6 @@ inline void buffer<T, SIZE>::insert(T input)
 	bufferArray[index] = input;
 }
 
-template <typename T, int SIZE>
-inline int buffer<T, SIZE>::get_maximum()
-{
-	returnMAX this_max;
-	for (int i = 0; i < SIZE; i++) {
-		if(this->[i]>maximum){
-			this_max.index = i;
-			this_max.maximum = this->[i];
-		}
-	}
-    return this_max;
-}
-
 template<typename T, int SIZE>
 void buffer<T, SIZE>::incrementIndex()
 {
@@ -68,7 +51,7 @@ void buffer<T, SIZE>::incrementIndex()
 }
 
 template<typename T, int SIZE>
-int buffer<T, SIZE>::modNonNegative(int a, int b)
+int buffer<T, SIZE>::modNonNegative(int a, int b) const
 {
 	int x = a % b;
 	if (x < 0) {

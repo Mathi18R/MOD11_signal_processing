@@ -4,11 +4,24 @@
 #include "least_mean_square.h"
 #include <mutex>
 
+template<typename T, int SIZE>
+int get_maximum(T (&array)[SIZE]){
+    T maximum = 0;
+    int index = 0;
+    for(int i=1; i < SIZE; i++){
+        if(array[i] > maximum){
+            maximum = array[i];
+            index = i;
+        }
+    }
+    return index;
+}
+
 
 template<typename T, int SIZE>
 void angle_handler(){
     
-    buffer<float, (2*SIZE)-1> cross_correlation_buffer;
+    float cross_correlation_buffer[(2*SIZE)-1];
     float tau_LF_RF;
     float tau_LF_LB;
     float tau_LF_RB;
@@ -26,17 +39,17 @@ void angle_handler(){
 
         buffer_mutex.lock();
         cross_correlation(bufferLF, bufferRF, cross_correlation_buffer);
-        tau_LF_RF = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        tau_LF_RF = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         cross_correlation(bufferLF, bufferLB, cross_correlation_buffer);
-        tau_LF_LB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        tau_LF_LB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         cross_correlation(bufferLF, bufferRB, cross_correlation_buffer);
-        tau_LF_RB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        tau_LF_RB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         cross_correlation(bufferRF, bufferLB, cross_correlation_buffer);
-        tau_RF_LB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        tau_RF_LB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         cross_correlation(bufferRF, bufferRB, cross_correlation_buffer);
-        tau_RF_RB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        tau_RF_RB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         cross_correlation(bufferLB, bufferRB, cross_correlation_buffer);
-        tau_LB_RB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        tau_LB_RB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         buffer_mutex.unlock();
 
         //Do least_mean_square

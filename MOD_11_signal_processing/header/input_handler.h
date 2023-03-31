@@ -1,5 +1,6 @@
 #pragma once
 #include "buffer.h"
+#include <mutex>
 
 template<typename T>
 T get_value(){
@@ -22,10 +23,10 @@ void input_handler(float Fs){
         T inputRB = get_value();
 
         buffer_mutex.lock();
-        bufferLF->insert(inputLF);
-        bufferRF->insert(inputRF);
-        bufferLB->insert(inputLB);
-        bufferRB->insert(inputRB);
+        bufferLF.insert(inputLF);
+        bufferRF.insert(inputRF);
+        bufferLB.insert(inputLB);
+        bufferRB.insert(inputRB);
         buffer_mutex.unlock();
 
         unsigned long delay;
