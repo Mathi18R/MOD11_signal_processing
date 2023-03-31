@@ -26,17 +26,18 @@ void angle_handler(){
 
         buffer_mutex.lock();
         cross_correlation(bufferLF, bufferRF, cross_correlation_buffer);
-        tau_LF_RF = float(cross_correlation_buffer.get_maximum() + SIZE - 1) / Fs_mic;
+        tau_LF_RF = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
         cross_correlation(bufferLF, bufferLB, cross_correlation_buffer);
-        tau_LF_LB = float(cross_correlation_buffer.get_maximum() + SIZE - 1) / Fs_mic;
+        tau_LF_LB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
         cross_correlation(bufferLF, bufferRB, cross_correlation_buffer);
-        tau_LF_RB = float(cross_correlation_buffer.get_maximum() + SIZE - 1) / Fs_mic;
+        tau_LF_RB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
         cross_correlation(bufferRF, bufferLB, cross_correlation_buffer);
-        tau_RF_LB = float(cross_correlation_buffer.get_maximum() + SIZE - 1) / Fs_mic;
+        tau_RF_LB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
         cross_correlation(bufferRF, bufferRB, cross_correlation_buffer);
-        tau_RF_RB = float(cross_correlation_buffer.get_maximum() + SIZE - 1) / Fs_mic;
+        tau_RF_RB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
         cross_correlation(bufferLB, bufferRB, cross_correlation_buffer);
-        tau_LB_RB = float(cross_correlation_buffer.get_maximum() + SIZE - 1) / Fs_mic;
+        tau_LB_RB = float(cross_correlation_buffer.get_maximum().index - SIZE) / Fs_mic;
+        buffer_mutex.unlock();
 
         //Do least_mean_square
 

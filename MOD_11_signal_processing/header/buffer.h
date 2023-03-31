@@ -1,4 +1,6 @@
 #pragma once
+#include "utils.h"
+
 template<typename T, int SIZE>
 class buffer
 {
@@ -49,8 +51,14 @@ inline void buffer<T, SIZE>::insert(T input)
 template <typename T, int SIZE>
 inline int buffer<T, SIZE>::get_maximum()
 {
-	
-    return 0;
+	returnMAX this_max;
+	for (int i = 0; i < SIZE; i++) {
+		if(this->[i]>maximum){
+			this_max.index = i;
+			this_max.maximum = this->[i];
+		}
+	}
+    return this_max;
 }
 
 template<typename T, int SIZE>
