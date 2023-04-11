@@ -20,14 +20,10 @@ void input_handler(float Fs){
         end_time = micros() + Ts_us;
         T inputLF = get_value(pin_micLF);
         T inputRF = get_value(pin_micRF);
-        T inputLB = get_value(pin_micLB);
-        T inputRB = get_value(pin_micRB);
 
         buffer_mutex.lock();
         bufferLF.insert(inputLF);
         bufferRF.insert(inputRF);
-        bufferLB.insert(inputLB);
-        bufferRB.insert(inputRB);
         buffer_mutex.unlock();
 
         unsigned long delay;

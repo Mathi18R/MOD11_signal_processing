@@ -22,13 +22,6 @@ void angle_handler(){
     
     float cross_correlation_buffer[(2*SIZE)-1];
     float tau_LF_RF;
-    float tau_LF_LB;
-    float tau_LF_RB;
-	float tau_RF_LB;
-    float tau_RF_RB;
-    float tau_LB_RB;
-    least_mean_square my_least_mean_square({ -0.1, 0.1 }, { 0.1, 0.1 }, { 0.1, -0.1 }, { -0.1, -0.1 });
-    
     unsigned long end_time;
     unsigned long Ts_us = int(1000000.0f/Fs_output);
 
@@ -39,21 +32,11 @@ void angle_handler(){
         buffer_mutex.lock();
         cross_correlation(bufferLF, bufferRF, cross_correlation_buffer);
         tau_LF_RF = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
-        cross_correlation(bufferLF, bufferLB, cross_correlation_buffer);
-        tau_LF_LB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
-        cross_correlation(bufferLF, bufferRB, cross_correlation_buffer);
-        tau_LF_RB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
-        cross_correlation(bufferRF, bufferLB, cross_correlation_buffer);
-        tau_RF_LB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
-        cross_correlation(bufferRF, bufferRB, cross_correlation_buffer);
-        tau_RF_RB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
-        cross_correlation(bufferLB, bufferRB, cross_correlation_buffer);
-        tau_LB_RB = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
         buffer_mutex.unlock();
 
-        //Do least_mean_square
+        //Send tau
 
-        region = my_least_mean_square.find_region(tau_LF_RF, tau_LF_LB, tau_LF_RB, tau_RF_LB, tau_RF_RB, tau_LB_RB);
+        Serial.print(tau_LF_RF);
 
         
         unsigned long delay;

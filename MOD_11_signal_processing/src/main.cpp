@@ -2,18 +2,14 @@
 #include <mutex>
 
 //pins:
-int pin_micLF = 33;
+int pin_micLF = 32;
 int pin_micRF = 33;
-int pin_micLB = 33;
-int pin_micRB = 33;
 
 //other:
 std::mutex buffer_mutex;
-int SIZE = 100;
+int SIZE = 4000;
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
-buffer<float, SIZE> bufferLB;
-buffer<float, SIZE> bufferRB;
 
 float Fs_mic = 40000;
 float Fs_output = 20;
@@ -22,11 +18,11 @@ int region = 0;
 
 //Needs to be included after mutex and buffer declarations
 #include "input_handler.h"
-
+#include "angle_handler.h"
 
 void setup() {
   // put your setup code here, to run once:
-
+  Serial.begin(115200);
 
   TaskHandle_t input_handler;
   xTaskCreatePinnedToCore(
