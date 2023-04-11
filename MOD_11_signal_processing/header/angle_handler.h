@@ -17,7 +17,6 @@ int get_maximum(T (&array)[SIZE]){
     return index;
 }
 
-
 template<typename T, int SIZE>
 void angle_handler(){
     

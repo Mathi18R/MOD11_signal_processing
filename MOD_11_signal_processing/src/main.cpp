@@ -1,6 +1,13 @@
 #include <Arduino.h>
 #include <mutex>
 
+//pins:
+int pin_micLF = 33;
+int pin_micRF = 33;
+int pin_micLB = 33;
+int pin_micRB = 33;
+
+//other:
 std::mutex buffer_mutex;
 int SIZE = 100;
 buffer<float, SIZE> bufferLF;

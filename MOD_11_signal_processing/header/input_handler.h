@@ -3,9 +3,10 @@
 #include <mutex>
 
 template<typename T>
-T get_value(){
+T get_value(int pin){
     //Do reading of microphone value here
-    return 0;
+    T value = analogRead(pin);
+    return value;
 }
 
 template<typename T, int SIZE>
@@ -17,10 +18,10 @@ void input_handler(float Fs){
     while(1){
         //This is the loop to update the buffers
         end_time = micros() + Ts_us;
-        T inputLF = get_value();
-        T inputRF = get_value();
-        T inputLB = get_value();
-        T inputRB = get_value();
+        T inputLF = get_value(pin_micLF);
+        T inputRF = get_value(pin_micRF);
+        T inputLB = get_value(pin_micLB);
+        T inputRB = get_value(pin_micRB);
 
         buffer_mutex.lock();
         bufferLF.insert(inputLF);
