@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <mutex>
+#include <buffer.h>
 
 //pins:
 int pin_micLF = 32;
@@ -7,7 +8,8 @@ int pin_micRF = 33;
 
 //other:
 std::mutex buffer_mutex;
-int SIZE = 4000;
+const int SIZE = 4000;
+
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
 
@@ -24,24 +26,29 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 
+  auto input_handler_function = input_handler<float, SIZE>;
+ 
   TaskHandle_t input_handler;
   xTaskCreatePinnedToCore(
-    input_handler<float, SIZE>, /* Function to implement the task */
-    "input_handler", /* Name of the task */
-    10000,  /* Stack size in words */
-    NULL,  /* Task input parameter */
-    0,  /* Priority of the task */
-    &input_handler,  /* Task handle. */
-    0); /* Core where the task should run */
+    input_handler_function, // Function to implement the task
+    "input_handler",            // Name of the task
+    10000,                      // Stack size in words
+    NULL,                       // Task input parameter
+    0,                          // Priority of the task
+    NULL,// Task handle. (pointer to function)
+    0                           // Core where the task should run
+);
+
+auto angle_handler_function = angle_handler<float, SIZE>;
 
   TaskHandle_t angle_handler;
   xTaskCreatePinnedToCore(
-    angle_handler<float, SIZE>, /* Function to implement the task */
+    angle_handler_function, /* Function to implement the task */
     "angle_handler", /* Name of the task */
     10000,  /* Stack size in words */
     NULL ,  /* Task input parameter */
     0,  /* Priority of the task */
-    &angle_handler,  /* Task handle. */
+    NULL,  /* Task handle. */
     1); /* Core where the task should run */
 }
 

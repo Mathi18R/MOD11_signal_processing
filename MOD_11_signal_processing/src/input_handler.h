@@ -10,7 +10,7 @@ T get_value(int pin){
 }
 
 template<typename T, int SIZE>
-void input_handler(float Fs){
+void input_handler(void *pvParameters){
     //This sets up the variables for update_buffer
     unsigned long end_time;
     unsigned long Ts_us = int(1000000.0f/Fs_mic);
@@ -18,8 +18,8 @@ void input_handler(float Fs){
     while(1){
         //This is the loop to update the buffers
         end_time = micros() + Ts_us;
-        T inputLF = get_value(pin_micLF);
-        T inputRF = get_value(pin_micRF);
+        T inputLF = get_value<T>(pin_micLF);
+        T inputRF = get_value<T>(pin_micRF);
 
         buffer_mutex.lock();
         bufferLF.insert(inputLF);
@@ -27,7 +27,7 @@ void input_handler(float Fs){
         buffer_mutex.unlock();
 
         unsigned long delay;
-        while(micros < end_time){
+        while(micros() < end_time){
             delay++;
         }
     }

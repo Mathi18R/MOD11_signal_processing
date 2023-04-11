@@ -18,7 +18,7 @@ int get_maximum(T (&array)[SIZE]){
 }
 
 template<typename T, int SIZE>
-void angle_handler(){
+void angle_handler(void *pvParameters){
     
     float cross_correlation_buffer[(2*SIZE)-1];
     float tau_LF_RF;
@@ -40,7 +40,7 @@ void angle_handler(){
 
         
         unsigned long delay;
-        while(micros < end_time){
+        while(micros() < end_time){
             delay++;
         }
     }
