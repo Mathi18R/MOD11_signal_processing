@@ -22,16 +22,8 @@ void input_handler(int sample_amount){
         T inputLF = get_value<T>(pin_micLF);
         T inputRF = get_value<T>(pin_micRF);
         
-
-        buffer_mutex.lock();
         bufferLF.insert(inputLF);
         bufferRF.insert(inputRF);
-        buffer_mutex.unlock();
-
-        Serial.print ("inputLF: ");
-        Serial.print (inputLF);
-        Serial.print ("    inputRF: ");
-        Serial.println (inputRF);
 
         unsigned long delay;
         while(micros() < end_time){
