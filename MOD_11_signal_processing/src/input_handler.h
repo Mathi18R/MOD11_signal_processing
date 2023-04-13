@@ -1,6 +1,4 @@
 #pragma once
-#include "buffer.h"
-#include <mutex>
 
 template<typename T>
 T get_value(int pin){
@@ -10,13 +8,15 @@ T get_value(int pin){
 }
 
 template<typename T, int SIZE>
-void input_handler(){
+void input_handler(int sample_amount){
     //This sets up the variables for update_buffer
     unsigned long end_time;
     unsigned long Ts_us = int(1000000.0f/Fs_mic);
     Serial.print ("Hello input! UWU");
     Serial.println(xPortGetCoreID());
-    while(1){
+    int sample = 0;
+
+    while(sample < sample_amount){
         //This is the loop to update the buffers
         end_time = micros() + Ts_us;
         T inputLF = get_value<T>(pin_micLF);
@@ -37,5 +37,6 @@ void input_handler(){
         while(micros() < end_time){
             delay++;
         }
+        sample++;
     }
 }
