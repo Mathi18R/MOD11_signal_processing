@@ -10,11 +10,12 @@ T get_value(int pin){
 }
 
 template<typename T, int SIZE>
-void input_handler(void *pvParameters){
+void input_handler(){
     //This sets up the variables for update_buffer
     unsigned long end_time;
     unsigned long Ts_us = int(1000000.0f/Fs_mic);
-
+    Serial.print ("Hello input! UWU");
+    Serial.println(xPortGetCoreID());
     while(1){
         //This is the loop to update the buffers
         end_time = micros() + Ts_us;
