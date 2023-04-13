@@ -2,6 +2,7 @@
 #include <mutex>
 #include <buffer.h>
 #include "esp_task_wdt.h"
+#include "esp_task_wdt.h"
 
 //pins:
 int pin_micLF = 32;
@@ -13,10 +14,11 @@ const int SIZE = 4000;
 
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
-float cross_correlation_buffer[(2*SIZE)-1];
 
-float Fs_mic = 40000;
-float Fs_output = 20;
+const float Fs_mic = 20000;
+const float Fs_output = 1000;
+const int sample_swing = 20000*0.001;//Change this when changing Fs_mic
+float cross_correlation_buffer[2*sample_swing-1];
 
 int region = 0;
 
@@ -30,9 +32,10 @@ void setup() {
   Serial.print("Hello world!");
   Serial.println(xPortGetCoreID());
 
-
+  disableCore0WDT();
+  disableCore1WDT();
+  
   auto angle_handler_function = angle_handler<float, SIZE>;
-
   TaskHandle_t angle_handler;
   xTaskCreatePinnedToCore(
     angle_handler_function, /* Function to implement the task */
@@ -43,6 +46,8 @@ void setup() {
     NULL,  /* Task handle. */
     1-xPortGetCoreID()); /* Core where the task should run */
     
+
+
     input_handler<float, SIZE>();
 }
 
