@@ -8,16 +8,22 @@
 
 
 //pins:
-#define I2S_NUM         I2S_NUM_0
-#define I2S_WS_PIN      27
-#define I2S_SCK_PIN     14
-#define I2S_SD_PIN      32
+#define I2S_NUM_0         I2S_NUM_0
+#define I2S_NUM_1         I2S_NUM_1
+#define I2S_WS_PIN        35
+#define I2S_SCK_PIN       34
+#define I2S_SD_PIN_0      32
+#define I2S_SD_PIN_1      33
 
 
 const int SIZE = 4000;
 
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
+buffer<float, SIZE> bufferLB;
+buffer<float, SIZE> bufferRB;
+
+
 
 const float Fs_mic = 40000;
 const float Fs_output = 1000;
@@ -46,7 +52,7 @@ void setup() {
     .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
     .communication_format = static_cast<i2s_comm_format_t>(I2S_COMM_FORMAT_I2S | I2S_COMM_FORMAT_I2S_MSB),
     .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
-    .dma_buf_count = 4,
+    .dma_buf_count = 8,
     .dma_buf_len = 1024,
     .use_apll = false,
     .tx_desc_auto_clear = false,
@@ -54,16 +60,26 @@ void setup() {
   };
 
   //config pins
-  i2s_pin_config_t pin_config = {
+  i2s_pin_config_t pin_config_0 = {
     .bck_io_num = I2S_SCK_PIN,
     .ws_io_num = I2S_WS_PIN,
     .data_out_num = I2S_PIN_NO_CHANGE,
-    .data_in_num = I2S_SD_PIN
+    .data_in_num = I2S_SD_PIN_0
+  };
+
+  i2s_pin_config_t pin_config_1 = {
+    .bck_io_num = I2S_SCK_PIN,
+    .ws_io_num = I2S_WS_PIN,
+    .data_out_num = I2S_PIN_NO_CHANGE,
+    .data_in_num = I2S_SD_PIN_1
   };
 
   //install driver and set pins
-  i2s_driver_install(I2S_NUM, &i2s_config, 0, NULL);
-  i2s_set_pin(I2S_NUM, &pin_config);
+  i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
+  i2s_set_pin(I2S_NUM_0, &pin_config_0);
+
+  i2s_driver_install(I2S_NUM_1, &i2s_config, 0, NULL);
+  i2s_set_pin(I2S_NUM_1, &pin_config_1);
 
 }
 
