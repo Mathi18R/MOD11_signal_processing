@@ -20,8 +20,7 @@ void angle_handler(){
     float tau_LF_RF;
 
     cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferRF, cross_correlation_buffer);
-    tau_LF_RF = float(get_maximum(cross_correlation_buffer) - SIZE) / Fs_mic;
+    tau_LF_RF = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
 
-    Serial.print("       tau_LF_RF      ");
-    Serial.print(tau_LF_RF);
+    Serial.println(tau_LF_RF*1000000);
 }
