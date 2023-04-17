@@ -1,5 +1,6 @@
 #pragma once
 #include "cross_correlation.h"
+#include <utility>
 
 template<typename T, int SIZE>
 int get_maximum(T (&array)[SIZE]){
