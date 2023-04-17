@@ -24,6 +24,8 @@ float cross_correlation_buffer[2*sample_swing-1];
 int region = 0;
 
 least_mean_square my_least_mean_square({ -0.1, 0.1 }, { 0.1, 0.1 }, { 0.1, -0.1 }, { -0.1, -0.1 });
+
+moving_average_factor_threshold my_moving_average(1.2, 0.2);
     
 
 //Needs to be included after mutex and buffer declarations
