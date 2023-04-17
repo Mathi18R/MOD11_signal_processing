@@ -3,17 +3,19 @@
 #include <utility>
 
 template<typename T, int SIZE>
-int get_maximum(T (&array)[SIZE]){
-    T maximum = 0;
-    int index = 0;
+std::pair<T, int> get_maximum(T (&array)[SIZE]){
+    std::pair<T, int> return_pair;
+    return_pair.first = 0;
+    return_pair.second = 0;
     for(int i=1; i < SIZE; i++){
-        if(array[i] > maximum){
-            maximum = array[i];
-            index = i;
+        if(array[i] > return_pair.first){
+            return_pair.first = array[i];
+            return_pair.second = i;
         }
     }
-    return index;
+    return return_pair;
 }
+
 
 template<typename T, int SIZE>
 void angle_handler(){
@@ -25,19 +27,25 @@ void angle_handler(){
     float tau_LB_RB = 0;
 
     cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferRF, cross_correlation_buffer);
-    tau_LF_RF = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
+    std::pair<T, int> maximum_LF_RF = get_maximum(cross_correlation_buffer);
+    tau_LF_RF = float(maximum_LF_RF.second - sample_swing) / Fs_mic;
     cross_correlation<float, SIZE, sample_swing>(bufferLB, bufferRB, cross_correlation_buffer);
-    tau_LB_RB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
+    std::pair<T, int> maximum_tau_LB_RB = get_maximum(cross_correlation_buffer);
+    tau_LB_RB = float(maximum_tau_LB_RB.second - sample_swing) / Fs_mic;
 
     cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferLB, cross_correlation_buffer);
-    tau_LF_LB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
+    std::pair<T, int> maximum_tau_LF_LB = get_maximum(cross_correlation_buffer);
+    tau_LF_LB = float(maximum_tau_LF_LB.second - sample_swing) / Fs_mic;
     cross_correlation<float, SIZE, sample_swing>(bufferRF, bufferRB, cross_correlation_buffer);
-    tau_RF_RB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
+    std::pair<T, int> maximum_tau_RF_RB = get_maximum(cross_correlation_buffer);
+    tau_RF_RB = float(maximum_tau_RF_RB.second - sample_swing) / Fs_mic;
 
     cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferRB, cross_correlation_buffer);
-    tau_LF_RB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
+    std::pair<T, int> maximum_tau_LF_RB = get_maximum(cross_correlation_buffer);
+    tau_LF_RB = float(maximum_tau_LF_RB.second - sample_swing) / Fs_mic;
     cross_correlation<float, SIZE, sample_swing>(bufferRF, bufferLB, cross_correlation_buffer);
-    tau_RF_LB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
+    std::pair<T, int> maximum_tau_RF_LB = get_maximum(cross_correlation_buffer);
+    tau_RF_LB = float(maximum_tau_RF_LB.second - sample_swing) / Fs_mic;
 
 
     region = my_least_mean_square.find_region(tau_LF_RF, tau_LF_LB, tau_LF_RB, tau_RF_LB, tau_RF_RB, tau_LB_RB);
