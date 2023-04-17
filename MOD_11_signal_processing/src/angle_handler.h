@@ -41,5 +41,6 @@ void angle_handler(){
 
 
     region = my_least_mean_square.find_region(tau_LF_RF, tau_LF_LB, tau_LF_RB, tau_RF_LB, tau_RF_RB, tau_LB_RB);
-
+    Serial.print("region: ");
+    Serial.println(region);
 }

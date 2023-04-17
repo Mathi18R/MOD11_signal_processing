@@ -1,34 +1,43 @@
 #pragma once
 
-template<typename T>
-T get_value(int pin){
-    //Do reading of microphone value here
-    T value = analogRead(pin);
-    return value;
-}
-
 template<typename T, int SIZE>
-void input_handler(int sample_amount){
-    //This sets up the variables for update_buffer
-    unsigned long end_time;
-    unsigned long Ts_us = int(1000000.0f/Fs_mic);
-    Serial.print ("Hello input! UWU");
-    Serial.println(xPortGetCoreID());
-    int sample = 0;
+void input_handler (int sample_amount){
+    int iterations = 8;
+    
+    int ByteBufferSize = ceil(SIZE/iterations)*8;
+    size_t bytes_read_L, bytes_read_R;
+    uint8_t buffer_L[ByteBufferSize], buffer_R[ByteBufferSize];
+     //
+    for(int j=0; j < iterations; j++){
+        //unsigned long int timeddd = micros();
+        i2s_read(I2S_NUM_0, buffer_L, sizeof(buffer_L), &bytes_read_L, portMAX_DELAY);
+        i2s_read(I2S_NUM_1, buffer_R, sizeof(buffer_R), &bytes_read_R, portMAX_DELAY);
+        //unsigned long int timediff = (micros() - timeddd) / 1000;
+        //Serial.print("I2S read time:\t");
+        //Serial.println(timediff);
 
-    while(sample < sample_amount){
-        //This is the loop to update the buffers
-        end_time = micros() + Ts_us;
-        T inputLF = get_value<T>(pin_micLF);
-        T inputRF = get_value<T>(pin_micRF);
         
-        bufferLF.insert(inputLF);
-        bufferRF.insert(inputRF);
+        for (int i = 0; i < bytes_read_L && i < bytes_read_R; i += 8) {
+            
+            //int32_t input_gnd_L = ((buffer_L[i] & 0x3F) << 26) | (buffer_L[i + 1] << 10) | (buffer_L[i + 2] << 2) | (buffer_L[i + 3] >> 6);
+            int32_t input_gnd_L = (buffer_L[i + 3] << 24) | (buffer_L[i + 2] << 16) | (buffer_L[i + 1] << 8) | buffer_L[i];
+             input_gnd_L >>= 8;
 
-        unsigned long delay;
-        while(micros() < end_time){
-            delay++;
-        }
-        sample++;
-    }
+            int32_t input_high_L = (buffer_L[i + 7] << 24) | (buffer_L[i + 6] << 16) | (buffer_L[i + 5] << 8) | buffer_L[i + 4];
+            input_high_L >>= 8;
+
+            // Extract samples for I2S_NUM_1
+            int32_t input_gnd_R = (buffer_R[i + 3] << 24) | (buffer_R[i + 2] << 16) | (buffer_R[i + 1] << 8) | buffer_R[i];
+            input_gnd_R >>= 8;
+
+            int32_t input_high_R = (buffer_R[i + 7] << 24) | (buffer_R[i + 6] << 16) | (buffer_R[i + 5] << 8) | buffer_R[i + 4];
+            input_high_R >>= 8;
+
+            bufferLB.insert(input_gnd_L);
+            bufferLF.insert(input_high_L);
+            bufferRB.insert(input_high_R);
+            bufferRF.insert(input_gnd_R);
+           
+        }   
+    }   
 }
