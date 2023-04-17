@@ -33,7 +33,7 @@ least_mean_square my_least_mean_square({ -0.1, 0.1 }, { 0.1, 0.1 }, { 0.1, -0.1 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  Serial.print("Hello world!");
+  Serial.print("Hello world!\tcore: ");
   Serial.println(xPortGetCoreID());
 }
 
