@@ -1,9 +1,10 @@
 #include <Arduino.h>
-#include <buffer.h>
 #include "esp_task_wdt.h"
 #include "esp_task_wdt.h"
 #include <driver/i2s.h>
 #include "soc/dport_access.h"
+#include <buffer.h>
+#include "least_mean_square.h"
 
 //pins:
 #define I2S_NUM_0         I2S_NUM_0
@@ -15,7 +16,7 @@
 #define I2S_SCK_PIN_1     12
 #define I2S_SD_PIN_1      27
 
-const int SIZE = 4000;
+const int SIZE = 2000;
 
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
@@ -53,7 +54,7 @@ void setup() {
     .dma_buf_len = 1024,
     .use_apll = false,
     .tx_desc_auto_clear = false,
-    .fixed_mclk = 0https://www.youtube.com/watch?v=7tDP4PTs-_k
+    .fixed_mclk = 0
   };
 
   //config pins
@@ -83,13 +84,13 @@ void setup() {
 void loop() {
 
   input_handler<float, SIZE>(SIZE);
-  Serial.print("input time: ");
-  Serial.println((micros()-prev_time)/1000);
-  prev_time = micros();
+  //Serial.print("input time: ");
+  //Serial.println((micros()-prev_time)/1000);
+  //prev_time = micros();
   
   angle_handler<float, SIZE>();
-  Serial.print("angle time: ");
-  Serial.println((micros()-prev_time)/1000);
-  prev_time = micros();
+  //Serial.print("angle time: ");
+  //Serial.println((micros()-prev_time)/1000);
+  //prev_time = micros();
 
 }

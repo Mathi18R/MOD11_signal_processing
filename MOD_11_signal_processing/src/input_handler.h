@@ -2,7 +2,7 @@
 
 template<typename T, int SIZE>
 void input_handler (int sample_amount){
-    int iterations = 8;
+    int iterations = 16;
     
     int ByteBufferSize = ceil(SIZE/iterations)*8;
     size_t bytes_read_L, bytes_read_R;
@@ -33,10 +33,20 @@ void input_handler (int sample_amount){
             int32_t input_high_R = (buffer_R[i + 7] << 24) | (buffer_R[i + 6] << 16) | (buffer_R[i + 5] << 8) | buffer_R[i + 4];
             input_high_R >>= 8;
 
-            bufferLB.insert(input_gnd_L);
-            bufferLF.insert(input_high_L);
-            bufferRB.insert(input_high_R);
-            bufferRF.insert(input_gnd_R);
+            //Print samples for all microphones in CSV format
+            //Serial.print(input_gnd_L);
+            //Serial.print(",");
+            //Serial.print(input_high_L);
+            //Serial.print(",");
+            //Serial.print(input_high_R);
+            //Serial.print(",");
+            //Serial.println(input_gnd_R);
+
+            
+            bufferLF.insert(input_gnd_L);
+            bufferLB.insert(input_high_L);
+            bufferRF.insert(input_high_R);
+            bufferRB.insert(input_gnd_R);
            
         }   
     }   
