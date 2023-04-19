@@ -3,7 +3,7 @@
 template<typename T, int SIZE>
 void input_handler (int sample_amount){
     int iterations = 8;
-    
+    //comment
     int ByteBufferSize = ceil(SIZE/iterations)*8;
     size_t bytes_read_L, bytes_read_R;
     uint8_t buffer_L[ByteBufferSize], buffer_R[ByteBufferSize];

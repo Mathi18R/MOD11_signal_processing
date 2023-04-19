@@ -17,7 +17,6 @@ private:
 	int angle_to_region(float angle);
 };
 
-
 std::pair<float, float> find_source::calculation(float tau1, float tau2, Coord mic_ref, Coord mic1, Coord mic2)
 {
 	float d_ref_to_1_sqrd = pow((mic_ref.x - mic1.x), 2) + pow((mic_ref.y - mic1.y), 2);
@@ -45,7 +44,6 @@ std::pair<float, float> find_source::calculation(float tau1, float tau2, Coord m
 
 	float angle_x1 = acos((a * abc_x1 + c) / (2 * abc_x1 * sqrt(d_ref_to_2_sqrd)));
 	float angle_x1 = acos((b * abc_x2 + d) / (2 * abc_x1 * sqrt(d_ref_to_2_sqrd)));
-
 
 	return {0,0};
 }
