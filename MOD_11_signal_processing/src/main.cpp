@@ -36,9 +36,9 @@ const int sample_swing = 40000*0.0015;//Change this when changing Fs_mic
 float cross_correlation_buffer[2*sample_swing-1];
 int prev_time = 0;
 
-//least_mean_square my_least_mean_square({ -0.075, 0.075}, { 0.075, 0.075 }, { 0.075 -0.075 }, { -0.075, -0.075 });
+moving_average_factor_threshold my_moving_average(1.2, 0.2);
 
-//Needs to be included after mutex and buffer declarations
+//Needs to be included after buffer declarations
 #include "input_handler.h"
 #include "angle_handler.h"
 
