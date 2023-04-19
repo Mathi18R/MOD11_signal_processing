@@ -6,6 +6,11 @@
 #include <buffer.h>
 //#include "least_mean_square.h"
 #include "sign_angle_finder.h"
+#include <DisplayHandler.h>
+#include <SPI.h>
+#include <Wire.h>
+
+DisplayHandler dp;
 
 //pins:
 #define I2S_NUM_0         I2S_NUM_0
@@ -79,6 +84,8 @@ void setup() {
   i2s_driver_install(I2S_NUM_1, &i2s_config, 0, NULL);
   i2s_set_pin(I2S_NUM_1, &pin_config_1);
 
+  dp.init();
+
 }
 
 void loop() {
@@ -93,5 +100,7 @@ void loop() {
   //Serial.print("angle time: ");
   //Serial.println((micros()-prev_time)/1000);
   //prev_time = micros();
+
+  dp.update(region);
 
 }
