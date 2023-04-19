@@ -103,5 +103,50 @@ inline int least_mean_square::compare_least_mean_square(float tau_LF_RF, float t
 		}
 	}
 
+	//Serial.print("errors:\t");
+	//for(int i = 0; i < 8; i++){
+		//Serial.print(errors[i]);
+		//Serial.print('\t');
+	//}
+	//Serial.println(' ');
+
+	
+	//Serial.print("tau_LF_RF:\t");
+    //Serial.print((tau_LF_RF*1000000));
+    //Serial.print("\ttau_LB_RB:\t");
+    //Serial.print((tau_LB_RB*1000000));
+    //Serial.print("\ttau_LF_LB:\t");
+    //Serial.print(tau_LF_LB*1000000);
+    //Serial.print("\ttau_RF_RB:\t");
+    //Serial.print(tau_RF_RB*1000000);
+    //Serial.print("tau_LF_RF:\t");
+    //Serial.print((tau_LF_RF*1000000));
+    //Serial.print("\ttau_LB_RB:\t");
+    //Serial.println((tau_LB_RB*1000000));
+
+	float d_LF_RF_ref = get_reference_d(micLF, micRF, Pi / 4 * min_error);
+	float d_LF_LB_ref = get_reference_d(micLF, micLB, Pi / 4 * min_error); 
+	float d_LF_RB_ref = get_reference_d(micLF, micRB, Pi / 4 * min_error);
+	float d_RF_LB_ref = get_reference_d(micRF, micLB, Pi / 4 * min_error); 
+	float d_RF_RB_ref = get_reference_d(micRF, micRB, Pi / 4 * min_error); 
+	float d_LB_RB_ref = get_reference_d(micLB, micRB, Pi / 4 * min_error);
+
+	//Serial.print("d_LF_RF:\t");
+    //Serial.print((d_LF_RF_ref/343*1000000));
+    //Serial.print("\td_LB_RB:\t");
+    //Serial.print((d_LB_RB_ref/343*1000000));
+    //Serial.print("\td_LF_LB:\t");
+    //Serial.print(d_LF_LB_ref/343*1000000);
+    //Serial.print("\td_RF_RB:\t");
+    //Serial.print(d_RF_RB_ref/343*1000000);
+    //Serial.print("d_LF_RF:\t");
+    //Serial.print((d_LF_RF_ref/343*1000000));
+    //Serial.print("\td_LB_RB:\t");
+    //Serial.println((d_LB_RB_ref/343*1000000));
+
+	//Serial.print("region insider: ");
+	//Serial.println(min_error);
+	
+
 	return min_error;
 }

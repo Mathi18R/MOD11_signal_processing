@@ -4,7 +4,8 @@
 #include <driver/i2s.h>
 #include "soc/dport_access.h"
 #include <buffer.h>
-#include "least_mean_square.h"
+//#include "least_mean_square.h"
+#include "sign_angle_finder.h"
 
 //pins:
 #define I2S_NUM_0         I2S_NUM_0
@@ -15,8 +16,8 @@
 #define I2S_WS_PIN_1      14
 #define I2S_SCK_PIN_1     12
 #define I2S_SD_PIN_1      27
-
-const int SIZE = 2000;
+//comment
+const int SIZE = 3500;
 
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
@@ -29,8 +30,7 @@ const int sample_swing = 40000*0.0015;//Change this when changing Fs_mic
 float cross_correlation_buffer[2*sample_swing-1];
 int prev_time = 0;
 
-least_mean_square my_least_mean_square({ -0.1, 0.1 }, { 0.1, 0.1 }, { 0.1, -0.1 }, { -0.1, -0.1 });
-int region = 0;
+//least_mean_square my_least_mean_square({ -0.075, 0.075}, { 0.075, 0.075 }, { 0.075 -0.075 }, { -0.075, -0.075 });
 
 //Needs to be included after mutex and buffer declarations
 #include "input_handler.h"
@@ -82,13 +82,14 @@ void setup() {
 }
 
 void loop() {
+  int region = 0;
 
   input_handler<float, SIZE>(SIZE);
   //Serial.print("input time: ");
   //Serial.println((micros()-prev_time)/1000);
   //prev_time = micros();
   
-  angle_handler<float, SIZE>();
+  region = angle_handler<float, SIZE>();
   //Serial.print("angle time: ");
   //Serial.println((micros()-prev_time)/1000);
   //prev_time = micros();

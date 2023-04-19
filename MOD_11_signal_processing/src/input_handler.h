@@ -2,7 +2,7 @@
 
 template<typename T, int SIZE>
 void input_handler (int sample_amount){
-    int iterations = 16;
+    int iterations = 50;
     
     int ByteBufferSize = ceil(SIZE/iterations)*8;
     size_t bytes_read_L, bytes_read_R;
@@ -16,6 +16,7 @@ void input_handler (int sample_amount){
         //Serial.print("I2S read time:\t");
         //Serial.println(timediff);
 
+        //ghdjhgfjghjkbhlkjbn
         
         for (int i = 0; i < bytes_read_L && i < bytes_read_R; i += 8) {
             
@@ -34,19 +35,20 @@ void input_handler (int sample_amount){
             input_high_R >>= 8;
 
             //Print samples for all microphones in CSV format
-            //Serial.print(input_gnd_L);
-            //Serial.print(",");
-            //Serial.print(input_high_L);
-            //Serial.print(",");
-            //Serial.print(input_high_R);
-            //Serial.print(",");
-            //Serial.println(input_gnd_R);
+           //Serial.print(input_gnd_L); //LB
+           //Serial.print(",");
+           //Serial.print(input_high_L); //LF
+           //Serial.print(",");
+           //Serial.print(input_high_R);// RB
+           //Serial.print(",");
+           //Serial.println(input_gnd_R); //RF
 
+
+            bufferLB.insert(input_gnd_L);
+            bufferLF.insert(input_high_L);
+            bufferRB.insert(input_high_R);
+            bufferRF.insert(input_gnd_R);
             
-            bufferLF.insert(input_gnd_L);
-            bufferLB.insert(input_high_L);
-            bufferRF.insert(input_high_R);
-            bufferRB.insert(input_gnd_R);
            
         }   
     }   
