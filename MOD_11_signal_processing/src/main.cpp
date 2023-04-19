@@ -15,12 +15,12 @@ DisplayHandler dp;
 //pins:
 #define I2S_NUM_0         I2S_NUM_0
 #define I2S_NUM_1         I2S_NUM_1
-#define I2S_WS_PIN_0      25
-#define I2S_SCK_PIN_0     26
-#define I2S_SD_PIN_0      33
-#define I2S_WS_PIN_1      14
-#define I2S_SCK_PIN_1     12
-#define I2S_SD_PIN_1      27
+#define I2S_WS_PIN_0      25 //LWS
+#define I2S_SCK_PIN_0     26 //LCLK
+#define I2S_SD_PIN_0      33 //LSD
+#define I2S_WS_PIN_1      14 //RWS
+#define I2S_SCK_PIN_1     12 //RCLK
+#define I2S_SD_PIN_1      27 //RSD
 //comment
 const int SIZE = 3500;
 

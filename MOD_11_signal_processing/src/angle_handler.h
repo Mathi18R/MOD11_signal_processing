@@ -66,7 +66,7 @@ int angle_handler(){
 
     int region = sign_angle_finder(tau_LF_RF, tau_LF_LB, tau_LF_RB, tau_RF_LB, tau_RF_RB, tau_LB_RB);
     
-
+    
     switch(region){
         case 0:
             break;
@@ -97,7 +97,7 @@ int angle_handler(){
         default:
             break;
     }
-        
+    
     //Serial.println(region);
 
     return region;

@@ -1,5 +1,16 @@
 #pragma once
 
+// Clear DMA buffers
+void clear_dma_buffers(i2s_port_t i2s_num, size_t buffer_size) {
+    uint8_t zero_buffer[buffer_size];
+    memset(zero_buffer, 0, buffer_size);
+    size_t bytes_written;
+    i2s_write(i2s_num, zero_buffer, buffer_size, &bytes_written, portMAX_DELAY);
+}
+
+
+
+
 template<typename T, int SIZE>
 void input_handler (int sample_amount){
     int iterations = 50;
@@ -7,6 +18,15 @@ void input_handler (int sample_amount){
     int ByteBufferSize = ceil(SIZE/iterations)*8;
     size_t bytes_read_L, bytes_read_R;
     uint8_t buffer_L[ByteBufferSize], buffer_R[ByteBufferSize];
+
+
+    // Clear DMA buffers before reading
+    int discard_iterations = 4;
+    for (int i = 0; i < discard_iterations; i++) {
+        i2s_read(I2S_NUM_0, buffer_L, sizeof(buffer_L), &bytes_read_L, portMAX_DELAY);
+        i2s_read(I2S_NUM_1, buffer_R, sizeof(buffer_R), &bytes_read_R, portMAX_DELAY);
+    }
+
      //
     for(int j=0; j < iterations; j++){
         //unsigned long int timeddd = micros();
@@ -17,7 +37,7 @@ void input_handler (int sample_amount){
         //Serial.println(timediff);
 
         //ghdjhgfjghjkbhlkjbn
-        
+
         for (int i = 0; i < bytes_read_L && i < bytes_read_R; i += 8) {
             
             //int32_t input_gnd_L = ((buffer_L[i] & 0x3F) << 26) | (buffer_L[i + 1] << 10) | (buffer_L[i + 2] << 2) | (buffer_L[i + 3] >> 6);
