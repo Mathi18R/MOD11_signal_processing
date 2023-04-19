@@ -15,15 +15,12 @@ sign get_sign(float value) {
 }
 
 
-int sign_angle_finder(float tau_LF_RF, float tau_LF_LB, float tau_LF_RB,
-    float tau_RF_LB, float tau_RF_RB, float tau_LB_RB) {
+int sign_angle_finder(float tau_LF_RF, float tau_LF_LB, float tau_RF_RB, float tau_LB_RB) {
     sign LF_RF, LF_LB, LF_RB, RF_LB, RF_RB, LB_RB;
     LF_RF = get_sign(tau_LF_RF);
     LB_RB = get_sign(tau_LB_RB);
     LF_LB = get_sign(tau_LF_LB);
     RF_RB = get_sign(tau_RF_RB);
-    LF_RB = get_sign(tau_LF_RB);
-    RF_LB = get_sign(tau_RF_LB);
 
     if (LF_RF == zero && LF_LB == positive && RF_RB == positive) {
         return 1;

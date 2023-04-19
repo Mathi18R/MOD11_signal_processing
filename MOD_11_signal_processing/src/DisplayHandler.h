@@ -18,6 +18,7 @@ class DisplayHandler {
    public:
     void init();
     void update(int direction);
+    void updateWrapper(void* direction);
     void updateWithIntensities(float* intensities);
 
    private:

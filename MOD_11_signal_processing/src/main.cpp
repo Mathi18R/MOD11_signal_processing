@@ -101,6 +101,15 @@ void loop() {
   //Serial.println((micros()-prev_time)/1000);
   //prev_time = micros();
 
-  dp.update(region);
+  void *input_arguments = &region;
+  xTaskCreatePinnedToCore(    
+      dp.updateWrapper,                    /*function*/
+      "screen_update",                  /* name of task */
+      1024,                           /* Stack size of task */
+      input_arguments,                /* parameter of the task */
+      1,                              /* priority of the task */
+      &TaskHandle,                    /* Task handle to keep track of created task */
+      1 - xPortGetCoreID()            /* pin task to opposite core */ 
+      );
 
 }

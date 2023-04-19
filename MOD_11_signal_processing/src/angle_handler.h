@@ -19,8 +19,6 @@ template<typename T, int SIZE>
 int angle_handler(){
     float tau_LF_RF = 0;
     float tau_LF_LB = 0;
-    float tau_LF_RB = 0;
-	float tau_RF_LB = 0;
     float tau_RF_RB = 0;
     float tau_LB_RB = 0;
 
@@ -37,12 +35,6 @@ int angle_handler(){
     tau_LF_LB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic; 
     cross_correlation<float, SIZE, sample_swing>(bufferRF, bufferRB, cross_correlation_buffer, 0);
     tau_RF_RB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic;
-
-    cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferRB, cross_correlation_buffer, 0);
-    tau_LF_RB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic+delayfix;
-    cross_correlation<float, SIZE, sample_swing>(bufferRF, bufferLB, cross_correlation_buffer, 0);
-    tau_RF_LB = float(get_maximum(cross_correlation_buffer) - sample_swing) / Fs_mic-delayfix;
-
 
   //Serial.print("tau_LF_RF:\t");
   //Serial.print((tau_LF_RF*1000000));
@@ -64,7 +56,7 @@ int angle_handler(){
     //int region = my_least_mean_square.find_region(tau_LF_RF, tau_LF_LB, tau_LF_RB, tau_RF_LB, tau_RF_RB, tau_LB_RB);
     
 
-    int region = sign_angle_finder(tau_LF_RF, tau_LF_LB, tau_LF_RB, tau_RF_LB, tau_RF_RB, tau_LB_RB);
+    int region = sign_angle_finder(tau_LF_RF, tau_LF_LB, tau_RF_RB, tau_LB_RB);
     
 
     switch(region){
