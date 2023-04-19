@@ -9,6 +9,7 @@
 #include <DisplayHandler.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <utility>
 
 DisplayHandler dp;
 
@@ -22,7 +23,7 @@ DisplayHandler dp;
 #define I2S_SCK_PIN_1     12
 #define I2S_SD_PIN_1      27
 //comment
-const int SIZE = 3500;
+const int SIZE = 3000;
 
 buffer<float, SIZE> bufferLF;
 buffer<float, SIZE> bufferRF;
@@ -40,6 +41,8 @@ int prev_time = 0;
 //Needs to be included after mutex and buffer declarations
 #include "input_handler.h"
 #include "angle_handler.h"
+
+static void updateWrapper(void* parameter);
 
 void setup() {
   // put your setup code here, to run once:
@@ -90,26 +93,39 @@ void setup() {
 
 void loop() {
   int region = 0;
-
+  
   input_handler<float, SIZE>(SIZE);
-  //Serial.print("input time: ");
-  //Serial.println((micros()-prev_time)/1000);
-  //prev_time = micros();
+  Serial.print("loop time: ");
+  Serial.println((micros()-prev_time)/1000);
+  prev_time = micros();
   
   region = angle_handler<float, SIZE>();
   //Serial.print("angle time: ");
   //Serial.println((micros()-prev_time)/1000);
   //prev_time = micros();
 
-  void *input_arguments = &region;
+  TaskHandle_t TaskHandle;
+  std::pair<DisplayHandler*, int> input_pair;
+  input_pair.first = &dp;//
+  input_pair.second = region;
+  void *input_arguments = &input_pair;
+  TaskFunction_t my_function = updateWrapper;
   xTaskCreatePinnedToCore(    
-      dp.updateWrapper,                    /*function*/
-      "screen_update",                  /* name of task */
-      1024,                           /* Stack size of task */
-      input_arguments,                /* parameter of the task */
-      1,                              /* priority of the task */
-      &TaskHandle,                    /* Task handle to keep track of created task */
-      1 - xPortGetCoreID()            /* pin task to opposite core */ 
-      );
+    my_function,                    /*function*/
+    "screen_update",                  /* name of task */
+    10000,                           /* Stack size of task */
+    input_arguments,                /* parameter of the task */
+    1,                              /* priority of the task */
+    &TaskHandle,                    /* Task handle to keep track of created task */
+    1 - xPortGetCoreID()            /* pin task to opposite core */ 
+    );
+}
 
+static void updateWrapper(void* parameter) {
+  int prev_time_screen = micros();
+  std::pair<DisplayHandler*, int> input_pair = *((std::pair<DisplayHandler*, int>*)parameter);
+  (input_pair.first)->update(input_pair.second);
+  Serial.print("screen time: ");
+  Serial.println((micros()-prev_time_screen)/1000);
+  vTaskDelete( NULL );
 }

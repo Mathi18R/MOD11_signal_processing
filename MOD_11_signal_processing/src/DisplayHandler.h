@@ -18,8 +18,9 @@ class DisplayHandler {
    public:
     void init();
     void update(int direction);
-    void updateWrapper(void* direction);
     void updateWithIntensities(float* intensities);
+
+    int check(){return 69;}
 
    private:
     Point center;

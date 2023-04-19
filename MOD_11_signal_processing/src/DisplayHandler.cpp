@@ -14,14 +14,14 @@ void DisplayHandler::init() {
     delay(1000);
 }
 
-void DisplayHandler::updateWrapper(void* direction) {
-    this->update(*((int*)direction));
-}
-
 //Direction [integer between 0 and 8, 0 is off, 1 is forward, then clockwise up to 8]
 void DisplayHandler::update(int direction) {
     if(direction == 0 && hold_counter < hold_time){
         hold_counter++;
+    }
+    else if(direction == 0 && hold_counter >= hold_time){
+        hold_counter = 0;
+        display.clearDisplay();
     }
     else{
         hold_counter = 0;
