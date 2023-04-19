@@ -26,19 +26,18 @@ int angle_handler(){
     float delayfix = 775.0f/1000000.0f;
     int offset = delayfix * Fs_mic;
 
-
-    cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferRF, cross_correlation_buffer);
+    cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferRF, cross_correlation_buffer, 0);
     std::pair<T, int> maximum_LF_RF = get_maximum(cross_correlation_buffer);
     tau_LF_RF = float(maximum_LF_RF.second - sample_swing) / Fs_mic;
-    cross_correlation<float, SIZE, sample_swing>(bufferLB, bufferRB, cross_correlation_buffer);
+    cross_correlation<float, SIZE, sample_swing>(bufferLB, bufferRB, cross_correlation_buffer, 0);
     std::pair<T, int> maximum_LB_RB = get_maximum(cross_correlation_buffer);
     tau_LB_RB = float(maximum_LB_RB.second - sample_swing) / Fs_mic;
 
-    cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferLB, cross_correlation_buffer);
+    cross_correlation<float, SIZE, sample_swing>(bufferLF, bufferLB, cross_correlation_buffer, 0);
     std::pair<T, int> maximum_LF_LB = get_maximum(cross_correlation_buffer);
     tau_LF_LB = float(maximum_LF_LB.second - sample_swing) / Fs_mic;
-    cross_correlation<float, SIZE, sample_swing>(bufferRF, bufferRB, cross_correlation_buffer);
-    std::pair<T, int> maximum_tau_LF_LB = get_maximum(cross_correlation_buffer);
+    cross_correlation<float, SIZE, sample_swing>(bufferRF, bufferRB, cross_correlation_buffer, 0);
+    std::pair<T, int> maximum_RF_RB = get_maximum(cross_correlation_buffer);
     tau_RF_RB = float(maximum_RF_RB.second - sample_swing) / Fs_mic;
 
 
@@ -59,7 +58,8 @@ int angle_handler(){
   //Serial.print("\ttau_RF_LB:\t");
   //Serial.println((tau_RF_LB*1000000));
 
-    if(my_moving_average.insert(maximum_LF_RF.first + maximum_LB_RB.first + 
+    int region;
+    if(!my_moving_average.insert(maximum_LF_RF.first + maximum_LB_RB.first + 
                                 maximum_LF_LB.first + maximum_LF_LB.first)){
         region = 0;
     }

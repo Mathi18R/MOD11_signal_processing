@@ -10,6 +10,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <utility>
+#include "moving_average.h"
 
 DisplayHandler dp;
 
