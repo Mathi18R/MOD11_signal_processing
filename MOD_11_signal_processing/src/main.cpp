@@ -37,7 +37,7 @@ const int sample_swing = 40000*0.0015;//Change this when changing Fs_mic
 float cross_correlation_buffer[2*sample_swing-1];
 int prev_time = 0;
 
-moving_average_factor_threshold my_moving_average(1.2, 0.2);
+moving_average_factor_threshold my_moving_average(1.035, 0.2);
 
 //Needs to be included after buffer declarations
 #include "input_handler.h"
@@ -54,7 +54,7 @@ void setup() {
   //configurate the i2s protocol
   i2s_config_t i2s_config = {
     .mode = static_cast<i2s_mode_t>(I2S_MODE_MASTER | I2S_MODE_RX),
-    .sample_rate = Fs_mic,
+    .sample_rate = (int)Fs_mic,
     .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
     .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
     .communication_format = static_cast<i2s_comm_format_t>(I2S_COMM_FORMAT_I2S | I2S_COMM_FORMAT_I2S_MSB),
@@ -96,9 +96,9 @@ void loop() {
   int region = 0;
   
   input_handler<float, SIZE>(SIZE);
-  Serial.print("loop time: ");
-  Serial.println((micros()-prev_time)/1000);
-  prev_time = micros();
+  //Serial.print("loop time: ");
+  //Serial.println((micros()-prev_time)/1000);
+  //prev_time = micros();
   
   region = angle_handler<float, SIZE>();
   //Serial.print("angle time: ");
@@ -123,10 +123,7 @@ void loop() {
 }
 
 static void updateWrapper(void* parameter) {
-  int prev_time_screen = micros();
   std::pair<DisplayHandler*, int> input_pair = *((std::pair<DisplayHandler*, int>*)parameter);
   (input_pair.first)->update(input_pair.second);
-  Serial.print("screen time: ");
-  Serial.println((micros()-prev_time_screen)/1000);
   vTaskDelete( NULL );
 }

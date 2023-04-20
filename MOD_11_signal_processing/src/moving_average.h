@@ -13,8 +13,10 @@ public:
 		bool threshold_reached = false;
 		if (averageNew > threshold_factor*average) {
 			threshold_reached = true;
+			Serial.println("------------------------------");
 		}
 		average = averageNew;
+		Serial.println(average/1000000000000.0f);
 		return threshold_reached;
 	}
 

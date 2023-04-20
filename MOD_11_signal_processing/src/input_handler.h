@@ -9,7 +9,7 @@ void input_handler (int sample_amount){
     uint8_t buffer_L[ByteBufferSize], buffer_R[ByteBufferSize];
 
     // Clear DMA buffers before reading
-    int discard_iterations = 4;
+    int discard_iterations = 8;
     for (int i = 0; i < discard_iterations; i++) {
         i2s_read(I2S_NUM_0, buffer_L, sizeof(buffer_L), &bytes_read_L, portMAX_DELAY);
         i2s_read(I2S_NUM_1, buffer_R, sizeof(buffer_R), &bytes_read_R, portMAX_DELAY);

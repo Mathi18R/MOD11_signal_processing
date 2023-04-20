@@ -69,6 +69,7 @@ int angle_handler(){
 
     switch(region){
         case 0:
+            Serial.println("nothing");
             break;
         case 1:
             Serial.println("front");
