@@ -15,8 +15,6 @@ void input_handler (int sample_amount){
         //unsigned long int timediff = (micros() - timeddd) / 1000;
         //Serial.print("I2S read time:\t");
         //Serial.println(timediff);
-
-        //ghdjhgfjghjkbhlkjbn
         
         for (int i = 0; i < bytes_read_L && i < bytes_read_R; i += 8) {
             
@@ -43,13 +41,10 @@ void input_handler (int sample_amount){
            //Serial.print(",");
            //Serial.println(input_gnd_R); //RF
 
-
             bufferLB.insert(input_gnd_L);
             bufferLF.insert(input_high_L);
             bufferRB.insert(input_high_R);
             bufferRF.insert(input_gnd_R);
-            
-           
         }   
     }   
 }
