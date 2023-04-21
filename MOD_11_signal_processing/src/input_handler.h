@@ -8,9 +8,6 @@ void clear_dma_buffers(i2s_port_t i2s_num, size_t buffer_size) {
     i2s_write(i2s_num, zero_buffer, buffer_size, &bytes_written, portMAX_DELAY);
 }
 
-
-
-
 template<typename T, int SIZE>
 void input_handler (int sample_amount){
     int iterations = 50;
